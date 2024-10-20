@@ -6,24 +6,38 @@ class CourseIndex:
     
     Args:
         index: Index number of the tutorial
-        timeslots: Set containing tuples of (day, start time, end time, week) for lectures
+        timeslots: list of tuples of the form (day, start time, end time, weeks)
     """
+    course_code: str
     index: int
-    timeslots: set[tuple]
+    timeslots: list[tuple]
     
-    def check_clash(self, other) -> bool:
+    def check_clash(self, index_list: list) -> bool:
         """Function checking if this tutorial index clashes with another tutorial index.
         
         Args:
             other: CourseIndex object to compare to
 
         Returns:
-            boolean indicating whether there is a clash
+            True if there is clash, False otherwise
         """
-        return not self.timeslots.isdisjoint(other.timeslots)
-    
+        # if index_list is empty, return False
+        if len(index_list) == 0:
+            return False
+        
+        # iterate through all the indexes in the index list
+        for other_index in index_list:
+            # Iterate over each timeslot in this index and check if it clashes with any timeslot in the other index
+            for timeslot1 in self.timeslots:
+                for timeslot2 in other_index.timeslots:
+                    if (timeslot1[0] == timeslot2[0]                      # Check if days match
+                        and timeslot1[1] <= timeslot2[1] <= timeslot1[2]  # Check if time overlap
+                        and timeslot1[3].intersection(timeslot2[3])       # Check if weeks overlap
+                        ):
+                        return True
+        return False
 
-def parse_weeks(weeks_str: str) -> list[int]:
+def parse_weeks(weeks_str: str) -> set[int]:
     """Helper function to parse the teaching week string into individual weeks.
 
     Args:
@@ -42,4 +56,4 @@ def parse_weeks(weeks_str: str) -> list[int]:
         else:
             weeks_list.append(int(item))
 
-    return weeks_list
+    return set(weeks_list)
