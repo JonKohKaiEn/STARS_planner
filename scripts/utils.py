@@ -11,9 +11,9 @@ class CourseIndex:
     """
     course_code: str
     index: int
-    timeslots: list[tuple]
-
-    def check_clash(self, index_list: list) -> bool:
+    timeslots: set[tuple]
+    
+    def check_clash(self, other) -> bool:
         """Function checking if this tutorial index clashes with another tutorial index.
 
         Args:
