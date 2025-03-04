@@ -1,5 +1,6 @@
 from .utils import CourseIndex
 
+
 def search(course_dict: dict) -> list:
     """Function that does a search for possible combination of course indexes.
 
@@ -9,11 +10,21 @@ def search(course_dict: dict) -> list:
     Returns:
         index_combo_list (list): List of possible combinations
     """
+    course_indexes = list(course_dict.values())
+    n_courses = len(course_indexes)
 
-    index_combo_list = []
-    curr_combo_list = []
-    curr_idx_list = [0 for _ in range(len(course_dict))]
-    combined_timings_set = set()
+    valid_combos = []
+    stack = [[]]
 
-    for course_code in course_dict:
-        # TODO: Finish this function
+    while stack:
+        curr_combo = stack.pop()
+
+        if len(curr_combo) == n_courses:
+            valid_combos.append(curr_combo)
+        else:
+            for course_index in course_indexes[len(curr_combo)]:
+                if not course_index.check_clash(curr_combo):
+                    stack.append(curr_combo + [course_index])
+
+    return valid_combos
+
