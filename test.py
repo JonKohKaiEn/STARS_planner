@@ -10,7 +10,7 @@ c1 = CourseIndex(
 c2 = CourseIndex(
     course_code='test2',
     index=2,
-    timeslots=[(4, '0930', '1000', {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13})]
+    timeslots=[('2', '0930', '1000', {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}), ('4', '0930', '1000', {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13})]
 )
 
 c3 = CourseIndex(
@@ -19,4 +19,4 @@ c3 = CourseIndex(
     timeslots=[]
 )
 
-print(c3.check_clash([c1]))
+print(c2.check_clash([c1]))

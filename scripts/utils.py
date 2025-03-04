@@ -77,7 +77,7 @@ def get_user_input() -> dict:
     while True:
         if input("Do you want to add a blockout period? (y/n): ").lower() == 'n':
             break
-        blockout_day = input("Input blockout period day (0: Monday, 1: Tuesday etc.): ")
+        blockout_day = int(input("Input blockout period day (0: Monday, 1: Tuesday etc.): "))
         blockout_period = input("Input blockout timing: ").split('-')
         timeslots.append((blockout_day, blockout_period[0], blockout_period[1], set([i for i in range(1, 14)])))
     
