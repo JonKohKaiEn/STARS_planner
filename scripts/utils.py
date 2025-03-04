@@ -13,7 +13,7 @@ class CourseIndex:
     index: int
     timeslots: set[tuple]
     
-    def check_clash(self, other) -> bool:
+    def check_clash(self, index_list: list) -> bool:
         """Function checking if this tutorial index clashes with another tutorial index.
 
         Args:
@@ -31,9 +31,9 @@ class CourseIndex:
             # Iterate over each timeslot in this index and check if it clashes with any timeslot in the other index
             for timeslot1 in self.timeslots:
                 for timeslot2 in other_index.timeslots:
-                    if (timeslot1[0] == timeslot2[0]                      # Check if days match
-                        and timeslot1[1] <= timeslot2[1] <= timeslot1[2]  # Check if time overlap
-                        and timeslot1[3].intersection(timeslot2[3])       # Check if weeks overlap
+                    if (timeslot1[0] == timeslot2[0]  # Check if days match
+                        and ((timeslot1[1] <= timeslot2[1] <= timeslot1[2]) or (timeslot2[1] <= timeslot1[1] <= timeslot2[2]))  # Check if time overlap
+                        and timeslot1[3].intersection(timeslot2[3])  # Check if weeks overlap
                         ):
                         return True
         return False
@@ -80,11 +80,11 @@ def get_user_input() -> dict:
         blockout_day = input("Input blockout period day (0: Monday, 1: Tuesday etc.): ")
         blockout_period = input("Input blockout timing: ").split('-')
         timeslots.append((blockout_day, blockout_period[0], blockout_period[1], set([i for i in range(1, 14)])))
-    if timeslots:
-        output['blockout'] = CourseIndex(
-            course_code='blockout',
-            index=0,
-            timeslots=timeslots,
-        )
-    print(output['blockout'])
+    
+    output['blockout'] = CourseIndex(
+        course_code='blockout',
+        index=0,
+        timeslots=timeslots,
+    )
+
     return output

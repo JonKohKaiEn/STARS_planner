@@ -20,12 +20,9 @@ def main():
                                     acadsem=(input_params['acad_year'], input_params['sem']),
                                     save_output=True)
             
-    if input_params['blockout'] is not None:
-        course_dict['blockout'] = [input_params['blockout']]
+    # print(course_dict)
 
-    print(course_dict)
-
-    possible_combinations = search(course_dict)
+    possible_combinations = search(course_dict, input_params['blockout'])
     print(len(possible_combinations))
     print(possible_combinations[0])
 
